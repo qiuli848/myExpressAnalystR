@@ -1,5 +1,5 @@
 ---
-title: "ExpressAnalystR"
+title: "myExpressAnalystR"
 output: html_document
 ---
 - [Description](#description)
