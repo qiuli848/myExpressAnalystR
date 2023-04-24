@@ -8,8 +8,8 @@
 
 .onAttach <- function (libname, pkgname){
   .on.public.web <<- FALSE;
-  k1 <- paste("ExpressAnalystR",
-              utils::packageVersion( "ExpressAnalystR"),
+  k1 <- paste("myExpressAnalystR",
+              utils::packageVersion( "myExpressAnalystR"),
               "initialized Successfully !")
   k0 <- "\n";
   packageStartupMessage(c(k1,k0));
@@ -398,7 +398,7 @@ ReadDataForMetaInfo<-function(dataName){
 doScatterJson <- function(dataName, filenm){
     dataSet <- readDataset(dataName);
     if(!exists("my.json.scatter")){ # public web on same user dir
-        compiler::loadcmp("../../rscripts/ExpressAnalystR/R/utils_scatter3d.Rc");    
+        compiler::loadcmp("../../rscripts/myExpressAnalystR/R/utils_scatter3d.Rc");    
     }
     return(my.json.scatter(dataSet, filenm));
 }

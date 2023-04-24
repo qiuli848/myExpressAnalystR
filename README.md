@@ -6,10 +6,10 @@ output: html_document
 - [Installation](#installation)
   * [1. Install package dependencies](#install-package-dependencies)
   * [2. Install the package](#install-the-package)
-- [Tips for using the ExpressAnalystR package](#tips-for-using-the-expressanalystr-package)
+- [Tips for using the myExpressAnalystR package](#tips-for-using-the-expressanalystr-package)
 - [Examples](#examples)
   * [1. Starting from a gene expression matrix](#starting-from-a-gene-expression-matrix)
-    + [1.1 Load ExpressAnalystR library and initialize R objects](#load-expressanalystr-library-and-initialize-r-objects)
+    + [1.1 Load myExpressAnalystR library and initialize R objects](#load-expressanalystr-library-and-initialize-r-objects)
     + [1.2 Read data table](#read-data-table)
     + [1.3 Annotate gene IDs to Entrez](#annotate-gene-ids-to-entrez)
     + [1.4 Perform data filtering and normalization](#perform-data-filtering-and-normalization)
@@ -17,7 +17,7 @@ output: html_document
     + [1.6 Perform DE analysis and check DE results](#perform-de-analysis-and-check-de-results)
     + [1.7 Visualize gene expression pattern of individual gene](#visualize-gene-expression-pattern-of-individual-gene)
   * [2. Starting from three datasets for meta-analysis](#starting-from-three-datasets-for-meta-analysis)
-    + [2.1 Load ExpressAnalystR library and initialize R objects](#load-expressanalystr-library-and-initialize-r-objects)
+    + [2.1 Load myExpressAnalystR library and initialize R objects](#load-expressanalystr-library-and-initialize-r-objects)
     + [2.2 Process each individual dataset](#process-each-individual-dataset)
     + [2.3 Perform data integrity check (compatibility)](#perform-data-integrity-check--compatibility-)
     + [2.4 Check diagnostic plot and perform batch correction](#check-diagnostic-plot-and-perform-batch-correction)
@@ -29,15 +29,15 @@ output: html_document
 **_ExpressAnalystR_** is the underlying R package synchronized with ExpressAnalyst web server. It is designed for statistical analysis, enrichment analysis and visual analytics of single and multiple gene expression data, both matrix and gene list. The R
 package is composed of R functions necessary for the web-server to perform data annotation, normalization, differential expression and meta-analysis.
 
-Following installation and loading of ExpressAnalystR, users will be able to reproduce web server results from their local computers using the R command history downloaded from ExpressAnalystR. Running the R functions will allow more flexibility and reproducibility.
+Following installation and loading of myExpressAnalystR, users will be able to reproduce web server results from their local computers using the R command history downloaded from myExpressAnalystR. Running the R functions will allow more flexibility and reproducibility.
 
-Note - ExpressAnalystR is still under development - we cannot guarantee full functionality
+Note - myExpressAnalystR is still under development - we cannot guarantee full functionality
 
 ## Installation
 
 ### 1. Install package dependencies
 
-To use ExpressAnalystR, make sure your R version is >4.0.3 and install all package dependencies. Ensure that you are able to download packages from Bioconductor. To install package dependencies, use the pacman R package. Note that some of these packages may require additional library dependencies that need to be installed prior to their own successful installation.
+To use myExpressAnalystR, make sure your R version is >4.0.3 and install all package dependencies. Ensure that you are able to download packages from Bioconductor. To install package dependencies, use the pacman R package. Note that some of these packages may require additional library dependencies that need to be installed prior to their own successful installation.
 
 ```
 install.packages("pacman")
@@ -49,7 +49,7 @@ pacman::p_load(igraph, RColorBrewer, qs, rjson, RSQLite)
 
 ### 2. Install the package
 
-ExpressAnalystR is freely available from GitHub. The package documentation, including the vignettes for each module and user manual is available within the downloaded R package file. If all package dependencies were installed, you will be able to install the ExpressAnalystR. 
+myExpressAnalystR is freely available from GitHub. The package documentation, including the vignettes for each module and user manual is available within the downloaded R package file. If all package dependencies were installed, you will be able to install the myExpressAnalystR. 
 
 Install the package directly from github using the _devtools_ package. Open R and enter:
 
@@ -58,19 +58,19 @@ Install the package directly from github using the _devtools_ package. Open R an
 install.packages('devtools')
 library(devtools)
 
-# Step 2: Install ExpressAnalystR WITHOUT documentation
-devtools::install_github("xia-lab/ExpressAnalystR", build = TRUE, build_opts = c("--no-resave-data", "--no-manual", "--no-build-vignettes"))
+# Step 2: Install myExpressAnalystR WITHOUT documentation
+devtools::install_github("xia-lab/myExpressAnalystR", build = TRUE, build_opts = c("--no-resave-data", "--no-manual", "--no-build-vignettes"))
 
-# Step 2: Install ExpressAnalystR WITH documentation
-devtools::install_github("xia-lab/ExpressAnalystR", build = TRUE, build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
+# Step 2: Install myExpressAnalystR WITH documentation
+devtools::install_github("xia-lab/myExpressAnalystR", build = TRUE, build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 ```
 
-## Tips for using the ExpressAnalystR package
+## Tips for using the myExpressAnalystR package
 
 1. The first function that you will use in every module is the `Init.Data` function, which initiates R objects that stores user's data, parameters for further processing and analysis.
-2. The ExpressAnalystR package will output data files/tables/analysis/networks outputs in your current working directory.
+2. The myExpressAnalystR package will output data files/tables/analysis/networks outputs in your current working directory.
 3. Every function must be executed in sequence as it is shown on the R Command history, please do not skip any commands as this can result in errors downstream.
-4. Main functions in ExpressAnalystR are documented. Use the _?Function_ format to open its documentation. For instance, use `?ExpressAnalystR::ReadTabExpression` to find out more about this function.
+4. Main functions in myExpressAnalystR are documented. Use the _?Function_ format to open its documentation. For instance, use `?myExpressAnalystR::ReadTabExpression` to find out more about this function.
 5. It is recommended to set the working folder to an empty folder because numerous files will be generated through the process.
 6. R package is not useful for visual analytics as they are hosted on the website. It's mainly useful for statistical analysis (differential expression and meta-analysis).
 7. R package is derived from R scripts used for powering web server. The values returned are often not useful in the context of local usage. The results from R functions are saved in a format qs file named as the file name of original data table. For gene list, the format qs file is named "datalist1". use this function to access: 
@@ -80,9 +80,9 @@ devtools::install_github("xia-lab/ExpressAnalystR", build = TRUE, build_opts = c
 
 ### 1. Starting from a gene expression matrix
 Before you start, please download the [example](https://www.expressanalyst.ca/ExpressAnalyst/resources/data/test/estrogen.txt) dataset. It is a microarray gene expression data of a human breast-cancer cell line. <br />
-#### 1.1 Load ExpressAnalystR library and initialize R objects
+#### 1.1 Load myExpressAnalystR library and initialize R objects
 ```
-library(ExpressAnalystR)
+library(myExpressAnalystR)
 
 #boolean FALSE indicates local mode (vs web mode);
 Init.Data(FALSE);
@@ -151,9 +151,9 @@ Check the resulting png image (Gene_5111.png) in your working directory. <br />
 Before you start, please download the example datasets into your working directory [E-GEOD-25713](https://dev.expressanalyst.ca/resources/data/test/E-GEOD-25713.txt), [E-GEOD-59276.txt](https://dev.expressanalyst.ca/resources/data/test/E-GEOD-59276.txt),
 [GSE69588.txt](https://dev.expressanalyst.ca/resources/data/test/GSE69588.txt). These three testing datasets (containing subset of 5000 genes) are from a meta-analysis of helminth infections in mouse liver.
 
-#### 2.1 Load ExpressAnalystR library and initialize R objects
+#### 2.1 Load myExpressAnalystR library and initialize R objects
 ```
-library(ExpressAnalystR)
+library(myExpressAnalystR)
 
 #boolean FALSE indicates local mode (vs web mode);
 Init.Data(FALSE);

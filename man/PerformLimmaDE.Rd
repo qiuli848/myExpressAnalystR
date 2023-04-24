@@ -4,7 +4,7 @@
 \alias{PerformLimmaDE}
 \title{Perform differential analysis using Limma method (meta-analysis)}
 \usage{
-PerformLimmaDE(dataName, grps, p.lvl, fc.lvl = NULL)
+PerformLimmaDE(dataName = "", grps, p.lvl, fc.lvl = NULL)
 }
 \arguments{
 \item{dataName}{File name of data set.}

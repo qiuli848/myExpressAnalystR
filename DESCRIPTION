@@ -10,15 +10,15 @@ Authors@R: c(
            )
 Debugger: Li Qiu
 Description: Underlying R functions for ExpressAnalyst web server.
-License: GPL (>= 2)
+License: MIT + file LICENSE
 Depends: R (>= 4.0.3), igraph, RColorBrewer, qs, rjson, RSQLite, ggplot2, Cairo
 Imports: Rcpp, BiocManager, data.table, metap, RJSONIO, ks, fgsea,
     dplyr, ggforce, graphlayouts, httr, knitr, rgl, edgeR, limma, sva,
     pryr, readr, metagenomeSeq
 VignetteBuilder: knitr
 LinkingTo: Rcpp
-BugReports: https://github.com/xia-lab/ExpressAnalystR/issues/new
-URL: https://github.com/xia-lab/ExpressAnalystR
+BugReports: https://github.com/xia-lab/myExpressAnalystR/issues/new
+URL: https://github.com/xia-lab/myExpressAnalystR
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

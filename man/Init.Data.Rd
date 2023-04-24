@@ -7,7 +7,7 @@
 Init.Data(onWeb = T, dataPath = "data/")
 }
 \arguments{
-\item{path}{path pointing to different built-in resources}
+\item{onWeb}{whether the script is running in local or on web}
 }
 \description{
 call this function before performing any analysis

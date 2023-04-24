@@ -4,7 +4,7 @@
 \alias{ReadTabExpressData}
 \title{Read tab delimited file}
 \usage{
-ReadTabExpressData(fileName)
+ReadTabExpressData(fileName, metafileName, metaContain = "false", path = "")
 }
 \arguments{
 \item{fileName}{file name of the data, .txt format}
