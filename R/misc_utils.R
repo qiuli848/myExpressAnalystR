@@ -81,7 +81,7 @@ RemoveDuplicates <- function(data, lvlOpt, quiet=T, paramSet, msgSet){
 # utils to remove from
 # within, leading and trailing spaces
 # remove /
-ClearFactorStrings<-function(cls.nm, query){
+ClearFactorStrings2<-function(cls.nm, query){
   # remove leading and trailing space
   query<- sub("^[[:space:]]*(.*?)[[:space:]]*$", "\\1", query, perl=TRUE);
   
@@ -91,8 +91,7 @@ ClearFactorStrings<-function(cls.nm, query){
   query <- gsub("[^[:alnum:] ]", "_", query);
   
   # test all numbers (i.e. Time points)
-  chars <- substr(query, 0, 1);
-  num.inx<- chars >= '0' & chars <= '9';
+  num.inx <- sapply(query, function(x) all(grepl("^\\d+$", x)))
   if(all(num.inx)){
     query <- as.numeric(query);
     nquery <- paste(cls.nm, query, sep="_");

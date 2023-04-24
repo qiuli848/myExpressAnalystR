@@ -209,15 +209,17 @@ GetFeatureNum <-function(dataName){
 
 ClearFactorStrings<-function(query){
   # remove leading and trailing space
-   query<- sub("^[[:space:]]*(.*?)[[:space:]]*$", "\\1", query, perl=TRUE); 
+  query <- sub("^[[:space:]]*(.*?)[[:space:]]*$", "\\1", query, perl=TRUE); 
   # kill multiple white space
-   query <- gsub(" +","_",query);
- num.inx<- as.numeric(query[query!="NA" & !is.na(query) & query!=""])
+  query <- gsub(" +","_",query);
+
+  num.inx<- as.numeric(query[query!="NA" & !is.na(query) & query!=""])
   if(all(!is.na(num.inx))){
-  query<-factor(query, levels= unique(query))
+    query <- factor(query, levels= unique(query))
   }else{
+    # remove non alphabets and non numbers
     query <- gsub("[^[:alnum:] ]", "_", query);
-   query<-factor(query, levels= unique(query))
+    query <- factor(query, levels = unique(query))
   }
   return (query);
 }
