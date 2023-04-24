@@ -1,5 +1,5 @@
-Package: my_ExpressAnalystR
-Title: my_ExpressAnalystR
+Package: myExpressAnalystR
+Title: myExpressAnalystR
 Version: 1.0.0
 Authors@R: c(
            person(given = "Guangyan",
