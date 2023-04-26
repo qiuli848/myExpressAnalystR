@@ -69,7 +69,7 @@ PerformDataAnnot <- function(dataName="", org="hsa", dataType="array", idType="e
       current.msg <- paste('Only ', perct, '% ID were matched. You may want to choose another ID type or use default.', sep=""); 
     } else {
       current.msg <- paste("ID annotation: ", "Total [", length(anot.id), 
-                           "] Matched [", matched.len, "] Unmatched [", sum(!hit.inx),"]", collapse="\n");    
+                          "] Matched [", matched.len, "] Unmatched [", sum(!hit.inx),"]", collapse="\n");    
       
       if (lvlOpt != 'NA' | idType == "entrez"){
         # do actual summarization to gene level
@@ -85,6 +85,9 @@ PerformDataAnnot <- function(dataName="", org="hsa", dataType="array", idType="e
       } else {
         current.msg <- paste(current.msg, "No gene level summarization was performed.");
       }
+      anot.id <- rownames(dataSet$data.anot) ## change: add the gene symbol and discription
+      gene.anot <- doEntrezIDAnot(anot.id, paramSet$data.org, paramSet$data.idType);
+      dataSet$gene.anot <- gene.anot
     }
   } else { # no conversion will be performed
     feature.vec <- rownames(data.proc);
@@ -106,15 +109,15 @@ PerformDataAnnot <- function(dataName="", org="hsa", dataType="array", idType="e
   avgCount <- sum(colSums(dataSet$data.anot))/ ncol(dataSet$data.anot);
   minCount <- min(colSums(dataSet$data.anot))
   maxCount <- max(colSums(dataSet$data.anot))
- lvls = ""
- if(any(dataSet$disc.inx.orig)){
-  disc = paste(names(dataSet$disc.inx.orig)[which(dataSet$disc.inx.orig)],collapse = ", ")
-  lvls = paste0(lvls,length(which(dataSet$disc.inx.orig))," discrete factors: ",disc,"; ")
- }
- if(any(dataSet$cont.inx.orig)){
-  cont = paste(names(dataSet$cont.inx.orig)[which(dataSet$cont.inx.orig)],collapse = ", ")
-  lvls = paste0(lvls,length(which(dataSet$cont.inx.orig))," continuous factors: ",cont,".")
- }
+  lvls = ""
+  if(any(dataSet$disc.inx.orig)){
+    disc = paste(names(dataSet$disc.inx.orig)[which(dataSet$disc.inx.orig)],collapse = ", ")
+    lvls = paste0(lvls,length(which(dataSet$disc.inx.orig))," discrete factors: ",disc,"; ")
+  }
+  if(any(dataSet$cont.inx.orig)){
+    cont = paste(names(dataSet$cont.inx.orig)[which(dataSet$cont.inx.orig)],collapse = ", ")
+    lvls = paste0(lvls,length(which(dataSet$cont.inx.orig))," continuous factors: ",cont,".")
+  }
 
   msgSet$current.msg <- current.msg;
   msgSet$summaryVec <- c(matched.len, perct, length(anot.id), sum(!hit.inx), ncol(dataSet$data.anot), ncol(dataSet$meta), sprintf("%4.2e", signif(totalCount ,3)), sprintf("%4.2e",signif(avgCount, 3)), sprintf("%4.2e",signif(minCount, 3)), sprintf("%4.2e",signif(maxCount,3)), lvls)  
@@ -142,7 +145,7 @@ AnnotateGeneData <- function(dataName, org, idtype){
   #record the info
   paramSet$data.org <- org
   dataSet$q.type.gene <- idtype;
- 
+
   dataSet$gene.org <- org;
   dataSet$gene <- gene.vec;
   if(idtype %in% c("entrez", "symbol", "refseq", "gb", "embl_gene","embl_protein", "embl_transcript", "orf", "tair", "wormbase", "ko", "custom", "s2f")){
@@ -306,7 +309,7 @@ AnnotateGeneData <- function(dataName, org, idtype){
     db.map[, col.nm] <- q.mat[,1];
   }
 
-   hit.inx <- match(feature.vec, db.map[, col.nm]);
+  hit.inx <- match(feature.vec, db.map[, col.nm]);
 
   if(outputType == "vec"){
     entrezs <- db.map[hit.inx, "gene_id"];
