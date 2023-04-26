@@ -143,7 +143,8 @@ GetSigGenes <-function(dataName="", res.nm="nm", p.lvl=0.05, fc.lvl=1, inx=1){
   analSet$sig.gene.count <- de.Num;
   saveSet(analSet, "analSet");
   res <- RegisterData(dataSet);
-  if(res == 1){
-    return(c(filename, de.Num, geneList, total, up, down, non.de.Num));
-  }
+  # if(res == 1){
+  #   return(c(filename, de.Num, geneList, total, up, down, non.de.Num));
+  # }
+  return(res)
 }
